@@ -46,18 +46,14 @@ TestingSessionLocal = get_sessionmaker(engine=test_engine)
 def create_fake_user() -> Dict[str, str]:
     """
     Generate a dictionary of fake user data for testing.
-
-    Returns:
-        A dict containing user fields with fake data.
     """
     return {
         "first_name": fake.first_name(),
         "last_name": fake.last_name(),
-        "email": fake.unique.email(),  # Ensure uniqueness where necessary
+        "email": fake.unique.email(),
         "username": fake.unique.user_name(),
-        "password": fake.password(length=12)
+        "password_hash": User.hash_password("TestPass123")
     }
-
 @contextmanager
 def managed_db_session():
     """

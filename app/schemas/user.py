@@ -3,8 +3,9 @@ from uuid import UUID
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, ConfigDict
 
-class UserResponse(BaseModel):
-    """Schema for user response data"""
+
+class UserRead(BaseModel):
+    """Schema for reading user data."""
     id: UUID
     username: str
     email: EmailStr
@@ -15,11 +16,17 @@ class UserResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)  # Enable mapping from ORM objects
+    model_config = ConfigDict(from_attributes=True)
+
+
+# Keep UserResponse for compatibility with existing authentication code
+class UserResponse(UserRead):
+    """Schema for user response data."""
+    pass
 
 
 class Token(BaseModel):
-    """Schema for authentication token response"""
+    """Schema for authentication token response."""
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
@@ -38,20 +45,20 @@ class Token(BaseModel):
                     "is_active": True,
                     "is_verified": False,
                     "created_at": "2025-01-01T00:00:00",
-                    "updated_at": "2025-01-08T12:00:00",
-                },
+                    "updated_at": "2025-01-08T12:00:00"
+                }
             }
         }
     )
 
 
 class TokenData(BaseModel):
-    """Schema for JWT token payload"""
+    """Schema for JWT token payload."""
     user_id: Optional[UUID] = None
 
 
 class UserLogin(BaseModel):
-    """Schema for user login"""
+    """Schema for user login."""
     username: str
     password: str
 
@@ -59,7 +66,7 @@ class UserLogin(BaseModel):
         json_schema_extra={
             "example": {
                 "username": "johndoe123",
-                "password": "SecurePass123",
+                "password": "SecurePass123"
             }
         }
     )
