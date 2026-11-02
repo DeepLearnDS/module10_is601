@@ -15,7 +15,10 @@ RUN apt-get update && \
 
 COPY requirements.txt .
 
-RUN python -m pip install --no-cache-dir --upgrade -r requirements.txt
+RUN python -m pip install --no-cache-dir --upgrade -r requirements.txt && \
+    python -m pip check && \
+    python -m pip show cryptography && \
+    rm -f /usr/local/lib/python3.12/site-packages/pip/_vendor/bom.cdx.json
 
 COPY . .
 
