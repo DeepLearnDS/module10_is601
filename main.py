@@ -15,9 +15,13 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
 # Setup templates directory
 templates = Jinja2Templates(directory="templates")
-
 # Pydantic model for request data
 class OperationRequest(BaseModel):
     a: float = Field(..., description="The first number")
@@ -61,7 +65,7 @@ async def read_root(request: Request):
     """
     Serve the index.html template.
     """
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request=request,name="index.html")
 
 @app.post("/add", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
 async def add_route(operation: OperationRequest):
