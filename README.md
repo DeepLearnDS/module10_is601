@@ -1,264 +1,222 @@
-# 📦 Project Setup
+# Module 10 – Enhanced Calculator with FastAPI, PostgreSQL, and Docker
 
----
+## Project Overview
 
-# 🧩 1. Install Homebrew (Mac Only)
+This project enhances the calculator application using **FastAPI, PostgreSQL, SQLAlchemy, and Docker**. It includes automated testing, database integration, security scanning, and a CI/CD pipeline using GitHub Actions.
 
-> Skip this step if you're on Windows.
+The application provides calculator operations and incorporates database and user authentication functionality as part of the Module 10 assignment.
 
-Homebrew is a package manager for macOS.  
-You’ll use it to easily install Git, Python, Docker, etc.
+## Technologies Used
 
-**Install Homebrew:**
+- Python 3.12
+- FastAPI
+- PostgreSQL 17
+- SQLAlchemy
+- Pydantic
+- Pytest and Pytest-Cov
+- Playwright
+- Docker and Docker Compose
+- GitHub Actions
+- Trivy security scanner
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+## Repository and Docker Hub
 
-**Verify Homebrew:**
+**GitHub Repository:**  
+https://github.com/DeepLearnDS/module10_is601
 
-```bash
-brew --version
-```
+**Docker Hub Repository:**  
+https://hub.docker.com/r/codeec/601_module10
 
-If you see a version number, you're good to go.
+**Docker Image:**  
+`codeec/601_module10:latest`
 
----
+## Prerequisites
 
-# 🧩 2. Install and Configure Git
+Install the following before running the application locally:
 
-## Install Git
+- Python 3.12
+- Docker Desktop
+- Docker Compose
+- Git
 
-- **MacOS (using Homebrew)**
+## Running the Application Locally
 
-```bash
-brew install git
-```
-
-- **Windows**
-
-Download and install [Git for Windows](https://git-scm.com/download/win).  
-Accept the default options during installation.
-
-**Verify Git:**
-
-```bash
-git --version
-```
-
----
-
-## Configure Git Globals
-
-Set your name and email so Git tracks your commits properly:
+### 1. Clone the repository
 
 ```bash
-git config --global user.name "Your Name"
-git config --global user.email "your_email@example.com"
+git clone https://github.com/DeepLearnDS/module10_is601.git
+cd module10_is601
 ```
 
-Confirm the settings:
-
-```bash
-git config --list
-```
-
----
-
-## Generate SSH Keys and Connect to GitHub
-
-> Only do this once per machine.
-
-1. Generate a new SSH key:
-
-```bash
-ssh-keygen -t ed25519 -C "your_email@example.com"
-```
-
-(Press Enter at all prompts.)
-
-2. Start the SSH agent:
-
-```bash
-eval "$(ssh-agent -s)"
-```
-
-3. Add the SSH private key to the agent:
-
-```bash
-ssh-add ~/.ssh/id_ed25519
-```
-
-4. Copy your SSH public key:
-
-- **Mac/Linux:**
-
-```bash
-cat ~/.ssh/id_ed25519.pub | pbcopy
-```
-
-- **Windows (Git Bash):**
-
-```bash
-cat ~/.ssh/id_ed25519.pub | clip
-```
-
-5. Add the key to your GitHub account:
-   - Go to [GitHub SSH Settings](https://github.com/settings/keys)
-   - Click **New SSH Key**, paste the key, save.
-
-6. Test the connection:
-
-```bash
-ssh -T git@github.com
-```
-
-You should see a success message.
-
----
-
-# 🧩 3. Clone the Repository
-
-Now you can safely clone the course project:
-
-```bash
-git clone <repository-url>
-cd <repository-directory>
-```
-
----
-
-# 🛠️ 4. Install Python 3.10+
-
-## Install Python
-
-- **MacOS (Homebrew)**
-
-```bash
-brew install python
-```
-
-- **Windows**
-
-Download and install [Python for Windows](https://www.python.org/downloads/).  
-✅ Make sure you **check the box** `Add Python to PATH` during setup.
-
-**Verify Python:**
-
-```bash
-python3 --version
-```
-or
-```bash
-python --version
-```
-
----
-
-## Create and Activate a Virtual Environment
-
-(Optional but recommended)
+### 2. Create and activate a virtual environment
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate.bat  # Windows
+source venv/bin/activate
 ```
 
-### Install Required Packages
+On Windows PowerShell:
+
+```powershell
+venv\Scripts\Activate.ps1
+```
+
+### 3. Install dependencies
 
 ```bash
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
----
+### 4. Start PostgreSQL and the application
 
-# 🐳 5. (Optional) Docker Setup
-
-> Skip if Docker isn't used in this module.
-
-## Install Docker
-
-- [Install Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
-- [Install Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
-
-## Build Docker Image
+Use Docker Compose to start the services:
 
 ```bash
-docker build -t <image-name> .
+docker compose up --build
 ```
 
-## Run Docker Container
+The application is available at:
+
+- **FastAPI application:** http://localhost:8000
+- **Swagger API documentation:** http://localhost:8000/docs
+- **pgAdmin:** http://localhost:5050
+
+To stop the services:
 
 ```bash
-docker run -it --rm <image-name>
+docker compose down
 ```
 
----
+## Running with Docker Hub
 
-# 🚀 6. Running the Project
+You can download and run the published Docker image without building it locally.
 
-- **Without Docker**:
+### 1. Pull the image
 
 ```bash
-python main.py
+docker pull codeec/601_module10:latest
 ```
 
-(or update this if the main script is different.)
-
-- **With Docker**:
+### 2. Run the container
 
 ```bash
-docker run -it --rm <image-name>
+docker run -d --name module10-calculator -p 8000:8000 codeec/601_module10:latest
 ```
 
----
+### 3. Access the application
 
-# 📝 7. Submission Instructions
+Open:
 
-After finishing your work:
+http://localhost:8000
+
+API documentation:
+
+http://localhost:8000/docs
+
+**Note:** The standalone Docker command starts the application container. For database-dependent functionality, use Docker Compose so that PostgreSQL is also available and configured.
+
+### 4. Stop and remove the container
 
 ```bash
-git add .
-git commit -m "Complete Module X"
-git push origin main
+docker stop module10-calculator
+docker rm module10-calculator
 ```
 
-Then submit the GitHub repository link as instructed.
+## Running Tests
 
----
+Activate your virtual environment and run:
 
-# 🔥 Useful Commands Cheat Sheet
+```bash
+pytest -v
+```
 
-| Action                         | Command                                          |
-| ------------------------------- | ------------------------------------------------ |
-| Install Homebrew (Mac)          | `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` |
-| Install Git                     | `brew install git` or Git for Windows installer |
-| Configure Git Global Username  | `git config --global user.name "Your Name"`      |
-| Configure Git Global Email     | `git config --global user.email "you@example.com"` |
-| Clone Repository                | `git clone <repo-url>`                          |
-| Create Virtual Environment     | `python3 -m venv venv`                           |
-| Activate Virtual Environment   | `source venv/bin/activate` / `venv\Scripts\activate.bat` |
-| Install Python Packages        | `pip install -r requirements.txt`               |
-| Build Docker Image              | `docker build -t <image-name> .`                |
-| Run Docker Container            | `docker run -it --rm <image-name>`               |
-| Push Code to GitHub             | `git add . && git commit -m "message" && git push` |
+To run tests with coverage:
 
----
+```bash
+pytest --cov=app --cov-report=term-missing
+```
 
-# 📋 Notes
+To generate an HTML coverage report:
 
-- Install **Homebrew** first on Mac.
-- Install and configure **Git** and **SSH** before cloning.
-- Use **Python 3.10+** and **virtual environments** for Python projects.
-- **Docker** is optional depending on the project.
+```bash
+pytest --cov=app --cov-report=html
+```
 
----
+The HTML report is generated in the `htmlcov` directory.
 
-# 📎 Quick Links
+## CI/CD Pipeline – GitHub Actions
 
-- [Homebrew](https://brew.sh/)
-- [Git Downloads](https://git-scm.com/downloads)
-- [Python Downloads](https://www.python.org/downloads/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [GitHub SSH Setup Guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
+GitHub Actions automates testing, security scanning, and Docker image deployment.
+
+The workflow includes three jobs:
+
+1. **Test**
+   - Installs Python dependencies.
+   - Starts a PostgreSQL service.
+   - Runs automated tests.
+   - Generates test and coverage reports.
+
+2. **Security**
+   - Builds the Docker image.
+   - Scans the image using Trivy.
+   - Checks for HIGH and CRITICAL vulnerabilities.
+
+3. **Deploy**
+   - Runs after successful testing and security scanning.
+   - Authenticates with Docker Hub using GitHub repository secrets.
+   - Builds and pushes the Docker image to Docker Hub.
+
+The Docker Hub deployment uses these GitHub repository secrets:
+
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
+
+The published image is tagged as:
+
+```text
+codeec/601_module10:latest
+codeec/601_module10:<commit-sha>
+```
+
+## Project Structure
+
+```text
+module10_is601/
+│
+├── app/
+│   ├── database.py
+│   ├── models/
+│   ├── schemas/
+│   └── operations.py
+│
+├── tests/
+│
+├── templates/
+│
+├── .github/
+│   └── workflows/
+│       └── test.yml
+│
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
+├── requirements.txt
+├── main.py
+└── README.md
+```
+
+## Learning Outcomes
+
+Through this assignment, I gained experience with:
+
+- Integrating FastAPI with PostgreSQL.
+- Working with SQLAlchemy and Pydantic.
+- Managing Python dependencies.
+- Running automated tests and measuring code coverage.
+- Containerizing an application with Docker.
+- Using Docker Compose to manage application services.
+- Automating testing and deployment through GitHub Actions.
+- Scanning Docker images for security vulnerabilities using Trivy.
+- Publishing Docker images to Docker Hub.
+
